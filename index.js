@@ -1,19 +1,26 @@
 require('./db/Connect');
+require('dotenv');
 
 const express = require('express');
-const User=require('./user');
+const User=require('./models/user');
 const cors=require('cors');
-
+const propertydata = require('./routes/property/proroute')
 const app=express();
 app.use(express.json());
 app.use(cors());
 
+app.use('/propost',propertydata);
 
 app.post('/reg', async (req, res) => {
     let user = new User(req.body);
     let result = await user.save();
     res.send(result);
 });
+
+
+app.get('/',(req,res) => {
+    res.send("Hello ")
+})
 
 app.post("/login", async (req, res) => {
     if (req.body.email && req.body.pass) {
@@ -59,8 +66,9 @@ app.post('/checkEmail', async (req, res) => {
       return res.status(500).json({ error: 'Internal Server Error' });
     }
   });
-
-app.listen(4000,()=>{
-    console.log("listening on http://localhost:3000");
+  let port = process.env.PORT || 4000
+  console.log(port)
+app.listen(port,()=>{
+    console.log(`listening on http://localhost:${port}`);
 })
 
