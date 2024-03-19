@@ -23,40 +23,40 @@ const storage = multer.diskStorage({
   });
 const upload = multer({ storage: storage });
   
-  // Endpoint for adding property data
-  app.post('/propost/adddata', upload.array('files'), async (req, res) => {
+// Endpoint for adding property data
+app.post('/propost/adddata', upload.array('files'), async (req, res) => {
     try {
-        if (!req.files || req.files.length === 0) {
-            return res.status(400).json({ error: 'No files uploaded' });
-          }         
-        const { proname, propertyType, rentpermonth, location, mobilenumber, selectbhk, area, furnished, bath, otherthing } = req.body;
-    
-        // Extract filenames from uploaded images
-        const imageFilenames = req.files.map(file => {
-            PropertyModal.create({ image:file.filename})
-            file.filename
-        });
-    
-        const newProdata = new PropertyModal({
-          image: imageFilenames,
-          proname,
-          propertyType,
-          rentpermonth,
-          location,
-          mobilenumber,
-          selectbhk,
-          area,
-          furnished,
-          bath,
-          otherthing
-        });
-    
-        const result = await newProdata.save();
-        res.status(201).json(result);
-      } catch (error) {
-        console.error('Error adding property data:', error);
-        res.status(500).json({ error: 'Internal Server Error' });
+      if (!req.files || req.files.length === 0) {
+        return res.status(400).json({ error: 'No files uploaded' });
       }
+  
+      const { proname, propertyType, rentpermonth, location, mobilenumber, selectbhk, area, furnished, bath, otherthing } = req.body;
+  
+      // Extract filenames from uploaded images
+      const imageFilenames = req.files.map(file => file.filename);
+  
+      // Create a new PropertyModal object
+      const newProdata = new PropertyModal({
+        image: imageFilenames, // Assign image filenames
+        proname,
+        propertyType,
+        rentpermonth,
+        location,
+        mobilenumber,
+        selectbhk,
+        area,
+        furnished,
+        bath,
+        otherthing
+      });
+  
+      // Save the new PropertyModal object
+      const result = await newProdata.save();
+      res.status(201).json(result);
+    } catch (error) {
+      console.error('Error adding property data:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
   });
   
 
