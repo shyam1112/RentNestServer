@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const prodata = mongoose.Schema(
     {
         image: {
-            type: Array,
+            type: [String],
             // required: true,
         },
         proname:{
