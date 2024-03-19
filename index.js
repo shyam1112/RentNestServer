@@ -32,7 +32,7 @@ const storage = multer.diskStorage({
         // Extract filenames from uploaded images
         const imageFilenames = req.files.map(file => file.filename);
     
-        const newProdata = new Prodata({
+        const newProdata = new PropertyModal({
           image: imageFilenames,
           proname,
           propertyType,
