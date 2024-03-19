@@ -1,16 +1,60 @@
 require('./db/Connect');
 require('dotenv').config();
-
+const PropertyModal = require('./models/prodatamodel');
+const multer = require('multer');
+const path = require('path');
 const express = require('express');
 const User=require('./models/user');
 const cors=require('cors');
-const propertydata = require('./routes/property/proroute')
+const propertydata = require('./routes/property/proroute');
+
 const app=express();
 app.use(express.json());
 app.use(cors());
+app.use('/Images', express.static('Images'));
 
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+      cb(null, './Images');
+    },
+    filename: (req, file, cb) => {
+      const ext = path.extname(file.originalname);
+      cb(null, file.fieldname + "_" + Date.now() + ext);
+    }
+  });
+  const upload = multer({ storage: storage });
+  
+  // Endpoint for adding property data
+  app.post('/propost/adddata', upload.array('images', 5), async (req, res) => {
+    try {
+        const { proname, propertyType, rentpermonth, location, mobilenumber, selectbhk, area, furnished, bath, otherthing } = req.body;
+    
+        // Extract filenames from uploaded images
+        const imageFilenames = req.files.map(file => file.filename);
+    
+        const newProdata = new Prodata({
+          image: imageFilenames,
+          proname,
+          propertyType,
+          rentpermonth,
+          location,
+          mobilenumber,
+          selectbhk,
+          area,
+          furnished,
+          bath,
+          otherthing
+        });
+    
+        const result = await newProdata.save();
+        res.status(201).json(result);
+      } catch (error) {
+        console.error('Error adding property data:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+      }
+  });
+  
 
-app.use('/propost',propertydata);
 
 app.post('/reg', async (req, res) => {
     let user = new User(req.body);
