@@ -68,7 +68,7 @@ app.post('/checkEmail', async (req, res) => {
     }
   });
   let port = process.env.PORT || 4000
-  console.log(port)
+//   console.log(port)
 app.listen(port,()=>{
     console.log(`listening on http://localhost:${port}`);
 })

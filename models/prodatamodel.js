@@ -4,41 +4,41 @@ const prodata = mongoose.Schema(
     {
         image: {
             type: Array,
-            required: true,
+            // required: true,
         },
         proname:{
             type:String
         },
         propertyType:{
             type:String,
-            required:true
+             // required: true,
         },
         rentpermonth:{
             type:String,
-            required:true
+             // required: true,
         },
         location:{
             type:String,
-            required:true
+             // required: true,
         },
         mobilenumber:{
             type:String,
-            required:true
+             // required: true,
         },
         selectbhk:{
             type:String,
-            required:true
+             // required: true,
         },
         area : {
             type:String,
         },
         furnished:{
             type:String,
-            required:true    
+             // required: true,    
         },
         bath:{
             type:String,
-            required:true
+             // required: true,
         },
         otherthing:{
             type:String
