@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const PropertyModal = require('../../models/prodatamodel');
+const multer = require('multer');
+
+const upload = multer({ dest: 'uploads/' });
 
 router.get('/', async (req, res) => {
     try {
@@ -16,10 +19,15 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.post('/adddata', async (req, res) => {
+router.post('/adddata', upload.array('images', 5), async (req, res) => {
     try {
-     
-        const newProperty = new PropertyModal(req.body);
+        const images = req.files.map(file => file.path);
+        
+        const newProperty = new PropertyModal({
+            ...req.body,
+            image: images
+        });
+
         const result = await newProperty.save();
         res.status(201).json(result);
     } catch (error) {
