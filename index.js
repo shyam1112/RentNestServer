@@ -18,21 +18,26 @@ const storage = multer.diskStorage({
       cb(null, './Images');
     },
     filename: (req, file, cb) => {
-      const ext = path.extname(file.originalname);
-      cb(null, file.fieldname + "_" + Date.now() + ext);
+      cb(null, file.fieldname + "_" + Date.now() + path.extname(file.originalname))
     }
   });
-  const upload = multer({ storage: storage });
+const upload = multer({ storage: storage });
   
   // Endpoint for adding property data
-  app.post('/propost/adddata', upload.array('images', 5), async (req, res) => {
+  app.post('/propost/adddata', upload.array('files'), async (req, res) => {
     try {
+        if (!req.files || req.files.length === 0) {
+            return res.status(400).json({ error: 'No files uploaded' });
+          }         
         const { proname, propertyType, rentpermonth, location, mobilenumber, selectbhk, area, furnished, bath, otherthing } = req.body;
     
         // Extract filenames from uploaded images
-        const imageFilenames = req.files.map(file => file.filename);
+        const imageFilenames = req.files.map(file => {
+            PropertyModal.create({ image:file.filename})
+            file.filename
+        });
     
-        const newProdata = new Prodata({
+        const newProdata = new PropertyModal({
           image: imageFilenames,
           proname,
           propertyType,
