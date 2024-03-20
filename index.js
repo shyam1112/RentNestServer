@@ -46,6 +46,7 @@ app.post('/propost/adddata', upload.array('files'), async (req, res) => {
       const imageFilenames = req.files.map(file => file.filename);
   
       const newProdata = new PropertyModal({
+        userid,
         image: imageFilenames, 
         proname,
         propertyType,
