@@ -18,7 +18,7 @@ const storage = multer.diskStorage({
       cb(null, './Images');
     },
     filename: (req, file, cb) => {
-      cb(null, file.fieldname + "_" + Date.now() + path.extname(file.originalname))
+      cb(null, `${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`)
     }
   });
 const upload = multer({ storage: storage });
@@ -32,12 +32,10 @@ app.post('/propost/adddata', upload.array('files'), async (req, res) => {
   
       const { proname, propertyType, rentpermonth, location, mobilenumber, selectbhk, area, furnished, bath, otherthing } = req.body;
   
-      // Extract filenames from uploaded images
       const imageFilenames = req.files.map(file => file.filename);
   
-      // Create a new PropertyModal object
       const newProdata = new PropertyModal({
-        image: imageFilenames, // Assign image filenames
+        image: imageFilenames, 
         proname,
         propertyType,
         rentpermonth,
@@ -50,7 +48,6 @@ app.post('/propost/adddata', upload.array('files'), async (req, res) => {
         otherthing
       });
   
-      // Save the new PropertyModal object
       const result = await newProdata.save();
       res.status(201).json(result);
     } catch (error) {
@@ -59,8 +56,6 @@ app.post('/propost/adddata', upload.array('files'), async (req, res) => {
     }
   });
   
-
-
 app.post('/reg', async (req, res) => {
     let user = new User(req.body);
     let result = await user.save();
