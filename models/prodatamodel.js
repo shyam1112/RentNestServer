@@ -4,7 +4,7 @@ const prodata = mongoose.Schema(
     {
         userid:{
             type:String,    
-            required:true
+            // required:true
         },
         image: {
             type:Array,

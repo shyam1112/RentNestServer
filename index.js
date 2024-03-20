@@ -41,7 +41,7 @@ app.post('/propost/adddata', upload.array('files'), async (req, res) => {
         return res.status(400).json({ error: 'No files uploaded' });
       }
   
-      const { proname, propertyType, rentpermonth, location, mobilenumber, selectbhk, area, furnished, bath, otherthing } = req.body;
+      const {userid, proname, propertyType, rentpermonth, location, mobilenumber, selectbhk, area, furnished, bath, otherthing } = req.body;
   
       const imageFilenames = req.files.map(file => file.filename);
   
