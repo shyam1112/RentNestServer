@@ -2,6 +2,10 @@ const mongoose = require('mongoose');
 
 const prodata = mongoose.Schema(
     {
+        userid:{
+            type:String,    
+            required:true
+        },
         image: {
             type:Array,
             // required: true,

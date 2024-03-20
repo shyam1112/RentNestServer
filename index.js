@@ -22,8 +22,19 @@ const storage = multer.diskStorage({
     }
   });
 const upload = multer({ storage: storage });
+
+
+app.get('/propost/getdata',async(req,res) => {
+  try{
+
+    let prodata = await PropertyModal.find();
+    res.send(prodata);
+  }catch(error){
+    console.error('Error adding property data:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+})
   
-// Endpoint for adding property data
 app.post('/propost/adddata', upload.array('files'), async (req, res) => {
     try {
       if (!req.files || req.files.length === 0) {
