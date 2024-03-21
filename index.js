@@ -26,11 +26,21 @@ const upload = multer({ storage: storage });
 
 app.get('/propost/getdata',async(req,res) => {
   try{
-
     let prodata = await PropertyModal.find();
     res.send(prodata);
   }catch(error){
     console.error('Error adding property data:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+})
+
+app.get('/propost/:id',async (req,res) => {
+  try{
+    // console.log(req.params.id);
+    let result = await PropertyModal.findOne({userid:req.params.id});
+    res.send(result);
+  }catch(error){
+    console.error('Error getting property data by id:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 })
@@ -62,7 +72,7 @@ app.post('/propost/adddata', upload.array('files'), async (req, res) => {
   
       const result = await newProdata.save();
       res.status(201).json(result);
-    } catch (error) {
+    } catch (error) { 
       console.error('Error adding property data:', error);
       res.status(500).json({ error: 'Internal Server Error' });
     }
