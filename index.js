@@ -34,13 +34,23 @@ app.get('/propost/getdata',async(req,res) => {
   }
 })
 
-app.get('/propost/:id',async (req,res) => {
+app.get('/propost/:getuserid',async (req,res) => {
   try{
     // console.log(req.params.id);
-    let result = await PropertyModal.findOne({userid:req.params.id});
+    let result = await PropertyModal.findOne({userid:req.params.getuserid});
     res.send(result);
   }catch(error){
-    console.error('Error getting property data by id:', error);
+    console.error('Error getting property data by userid:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+})
+
+app.get('/propost/getproperty/:getproid',async (req,res) => {
+  try{
+    let result = await PropertyModal.findOne({_id:req.params.getproid});
+    res.send(result);
+  }catch(error){
+    console.error('Error getting property data by proid:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 })
