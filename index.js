@@ -7,12 +7,14 @@ const express = require('express');
 const User=require('./models/user');
 const cors=require('cors');
 const propertydata = require('./routes/property/proroute');
-
+const OrderBook = require('./routes/order/OrderBook');
 const app=express();
 app.use(express.json());
 app.use(cors());
 app.use('/Images', express.static('Images'));
 
+
+app.use('/order',OrderBook)
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
       cb(null, './Images');
