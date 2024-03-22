@@ -39,7 +39,7 @@ app.get('/propost/getdata',async(req,res) => {
 app.get('/propost/:getuserid',async (req,res) => {
   try{
     // console.log(req.params.id);
-    let result = await PropertyModal.findOne({userid:req.params.getuserid});
+    let result = await PropertyModal.find({userid:req.params.getuserid});
     res.send(result);
   }catch(error){
     console.error('Error getting property data by userid:', error);
