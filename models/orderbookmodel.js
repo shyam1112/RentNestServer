@@ -2,6 +2,15 @@ const mongoose = require('mongoose');
 
 const orderSchema = mongoose.Schema(
     {
+
+        userid:{
+            type:String,
+            required:true
+        },
+        propertyid:{
+            type:String,
+            required:true
+        },
         customer_name :{
             type:String,
             required:true

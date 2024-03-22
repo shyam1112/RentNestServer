@@ -5,28 +5,30 @@ const router = express.Router();
 router.get('/', (req, res) => {
     res.send("Order Booked.");
 })
-
 router.post('/addorder', async (req, res) => {
     try {
-
         const adddata = new orderModal(req.body);
         const validationResult = adddata.validateSync(); 
 
-        if (validationResult.error) {
-            const errors = validationResult.error.errors;
-            const errorMessages = Object.keys(errors).map(key => errors[key].message);
-            return res.status(400).send({ errors: errorMessages });
+        if (validationResult && validationResult.errors) {
+            const errors = Object.values(validationResult.errors).map(error => error.message);
+            return res.status(400).send({ errors });
         } else {
             try {
                 const saved = await adddata.save();
                 res.send(saved);
             } catch (error) {
-                res.status(500).send({ error: error.message });
+                console.error("Save error:", error);
+                res.status(500).send({ error: "Error saving data." });
             }
         }
     } catch (error) {
-        res.send(error);
+        // Handle any unexpected errors
+        console.error("Unexpected error:", error);
+        res.status(500).send({ error: "An unexpected error occurred." });
     }
-})
+});
+
+
 
 module.exports = router;
