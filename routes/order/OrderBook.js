@@ -30,5 +30,16 @@ router.post('/addorder', async (req, res) => {
 });
 
 
+router.get('/:useridd',async(req,res) => {
+    try{
+        const { useridd } = req.params;
+        console.log(useridd);
+        let result = await orderModal.find({userid:useridd});
+        res.send(result);
+    }catch(error){
+        console.error("Unexpected error:", error);
+        res.status(500).send({ error: "An unexpected error occurred when get order by id." });
+    }
+})
 
 module.exports = router;
