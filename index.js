@@ -15,6 +15,7 @@ app.use('/Images', express.static('Images'));
 
 
 app.use('/order',OrderBook)
+
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
       cb(null, './Images');
@@ -33,6 +34,26 @@ app.get('/propost/getdata',async(req,res) => {
   }catch(error){
     console.error('Error adding property data:', error);
     res.status(500).json({ error: 'Internal Server Error' });
+  }
+})
+
+app.get('/propost/search/:key',async (req,res) => {
+  try{
+    let searchData = await PropertyModal.find(
+      {
+        "$or":[
+          {location:{$regex:req.params.key}}
+        ]
+      }
+    )
+    if(searchData){
+      res.send(searchData);
+    }else{
+      res.send("No Data Found.")
+    }
+  }catch(error){
+    console.error('Error while search property by location.');
+    res.status(500).json({error:'Error while searcg property by location.'})
   }
 })
 

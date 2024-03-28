@@ -5,6 +5,7 @@ const router = express.Router();
 router.get('/', (req, res) => {
     res.send("Order Booked.");
 })
+
 router.post('/addorder', async (req, res) => {
     try {
         const adddata = new orderModal(req.body);
